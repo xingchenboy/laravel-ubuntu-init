@@ -49,8 +49,8 @@ function init_repositories {
     # https://mirrors.tuna.tsinghua.edu.cn/  2021-02-05移除 nodesource 镜像
 
     curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-    echo 'deb https://deb.nodesource.com/node_16.x xenial main' > /etc/apt/sources.list.d/nodesource.list
-    echo 'deb-src https://deb.nodesource.com/node_16.x xenial main' >> /etc/apt/sources.list.d/nodesource.list
+    echo 'deb https://deb.nodesource.com/node_14.x focal main' > /etc/apt/sources.list.d/nodesource.list
+    echo 'deb-src https://deb.nodesource.com/node_14.x focal main' >> /etc/apt/sources.list.d/nodesource.list
 
     apt-get update
 }
