@@ -3,21 +3,21 @@
 
 ## 简介
 
-适用于 Ubuntu 16.04 / 18.04 / 20.04 的 LNMP 安装脚本，并设置了国内镜像加速。
+适用于 Ubuntu 20.04 的 LNMP 安装脚本，并设置了国内镜像加速。
 
 请确保所有命令都以 root 账户执行，如果登录账户不是 root，则需要执行 `sudo -H -s` 切换为 root 账户后再下载安装。
 
-> 注：下文将使用 `{version}` 来替代你选中的系统，如 16.04 / 18.04 / 20.04。
+> 注：下文将使用 `{version}` 来替代你选中的系统，如 20.04。
 
 ## 软件列表
 
 * Git
-* PHP 7.4
+* PHP 8.1
 * Nginx
 * MySQL
 * Sqlite3
 * Composer
-* Nodejs 10
+* Nodejs 16
 * Yarn
 * Redis
 * Beanstalkd
@@ -30,20 +30,6 @@
 * Elasticsearch：`./{version}/install_elasticsearch.sh`，默认为 6.x，如果要安装 7.x 则执行 `./{version}/install_elasticsearch.sh 7`
 
 ## 安装
-
-### Ubuntu 16.04
-
-```
-wget -qO- https://raw.githubusercontent.com/summerblue/laravel-ubuntu-init/master/download.16.04.sh - | bash
-```
-
-
-### Ubuntu 18.04
-
-```
-wget -qO- https://raw.githubusercontent.com/summerblue/laravel-ubuntu-init/master/download.18.04.sh - | bash
-```
-
 
 ### Ubuntu 20.04
 

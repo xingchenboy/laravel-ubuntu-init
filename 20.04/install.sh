@@ -22,6 +22,16 @@ function init_system {
     init_alias
 }
 
+function install_zsh {
+    apt-get install -y zsh
+    chsh -s /bin/zsh
+}
+
+function create_wwwdata {
+    cat /etc/passwd | grep www-data
+    sed -i 's/www-data:\/var\/www:\/usr\/sbin\/nologin/www-data:\/var\/www:\/bin\/bash/' /etc/passwd
+}
+
 function init_alias {
     alias sudowww > /dev/null 2>&1 || {
         echo "alias sudowww='sudo -H -u ${WWW_USER} sh -c'" >> ~/.bash_aliases
@@ -39,8 +49,8 @@ function init_repositories {
     # https://mirrors.tuna.tsinghua.edu.cn/  2021-02-05移除 nodesource 镜像
 
     curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-    echo 'deb https://deb.nodesource.com/node_10.x focal main' > /etc/apt/sources.list.d/nodesource.list
-    echo 'deb-src https://deb.nodesource.com/node_10.x focal main' >> /etc/apt/sources.list.d/nodesource.list
+    echo 'deb https://deb.nodesource.com/node_16.x focal main' > /etc/apt/sources.list.d/nodesource.list
+    echo 'deb-src https://deb.nodesource.com/node_16.x focal main' >> /etc/apt/sources.list.d/nodesource.list
 
     apt-get update
 }
@@ -55,7 +65,7 @@ function install_node_yarn {
 }
 
 function install_php {
-    apt-get install -y php7.4-bcmath php7.4-cli php7.4-curl php7.4-fpm php7.4-gd php7.4-mbstring php7.4-mysql php7.4-opcache php7.4-pgsql php7.4-readline php7.4-xml php7.4-zip php7.4-sqlite3 php7.4-redis
+    apt-get install -y php8.1-bcmath php8.1-cli php8.1-curl php8.1-fpm php8.1-gd php8.1-mbstring php8.1-mysql php8.1-opcache php8.1-pgsql php8.1-readline php8.1-xml php8.1-zip php8.1-sqlite3 php8.1-redis php8.1-swoole
 }
 
 function install_others {
@@ -75,11 +85,13 @@ function install_composer {
 
 call_function init_system "正在初始化系统" ${LOG_PATH}
 call_function init_repositories "正在初始化软件源" ${LOG_PATH}
+call_function create_wwwdata "正在创建 www-data 用户" ${LOG_PATH}
 call_function install_basic_softwares "正在安装基础软件" ${LOG_PATH}
 call_function install_php "正在安装 PHP" ${LOG_PATH}
 call_function install_others "正在安装 Mysql / Nginx / Redis / Memcached / Beanstalkd / Sqlite3" ${LOG_PATH}
 call_function install_node_yarn "正在安装 Nodejs / Yarn" ${LOG_PATH}
 call_function install_composer "正在安装 Composer" ${LOG_PATH}
+call_function install_zsh "正在安装 zsh" ${LOG_PATH}
 
 ansi --green --bold -n "安装完毕"
 ansi --green --bold "Mysql root 密码："; ansi -n --bold --bg-yellow --black ${MYSQL_ROOT_PASSWORD}
