@@ -6,8 +6,6 @@ source ${CURRENT_DIR}/../common/common.sh
 
 [ $(id -u) != "0" ] && { ansi -n --bold --bg-red "请用 root 账户执行本脚本"; exit 1; }
 
-MYSQL_ROOT_PASSWORD=`random_string`
-
 function init_system {
     export LC_ALL="en_US.UTF-8"
     echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
@@ -70,9 +68,7 @@ function install_php {
 
 function install_others {
     apt-get remove -y apache2
-    debconf-set-selections <<< "mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASSWORD}"
-    debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD}"
-    apt-get install -y nginx mysql-server redis-server memcached beanstalkd sqlite3
+    apt-get install -y nginx redis-server memcached beanstalkd sqlite3
     chown -R ${WWW_USER}.${WWW_USER_GROUP} /var/www/
     systemctl enable nginx.service
 }
@@ -88,11 +84,10 @@ call_function init_repositories "正在初始化软件源" ${LOG_PATH}
 call_function create_wwwdata "正在创建 www-data 用户" ${LOG_PATH}
 call_function install_basic_softwares "正在安装基础软件" ${LOG_PATH}
 call_function install_php "正在安装 PHP" ${LOG_PATH}
-call_function install_others "正在安装 Mysql / Nginx / Redis / Memcached / Beanstalkd / Sqlite3" ${LOG_PATH}
+call_function install_others "正在安装 Nginx / Redis / Memcached / Beanstalkd / Sqlite3" ${LOG_PATH}
 call_function install_node_yarn "正在安装 Nodejs / Yarn" ${LOG_PATH}
 call_function install_composer "正在安装 Composer" ${LOG_PATH}
 call_function install_zsh "正在安装 zsh" ${LOG_PATH}
 
 ansi --green --bold -n "安装完毕"
-ansi --green --bold "Mysql root 密码："; ansi -n --bold --bg-yellow --black ${MYSQL_ROOT_PASSWORD}
 ansi --green --bold -n "请手动执行 source ~/.bash_aliases 使 alias 指令生效。"
